@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geburten und Todesfälle weltweit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+        }
+        .statistic {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+    </style>
+    <script>
+        // Durchschnittliche Geburten und Todesfälle pro Tag (basierend auf Schätzungen)
+        const birthsPerDay = 385000;
+        const deathsPerDay = 165000;
+
+        function updateStats() {
+            document.getElementById('births').innerText = birthsPerDay.toLocaleString();
+            document.getElementById('deaths').innerText = deathsPerDay.toLocaleString();
+        }
+
+        window.onload = updateStats;
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Weltweite Statistiken</h1>
+        <div class="statistic">
+            <strong>Geburten pro Tag:</strong> <span id="births"></span>
+        </div>
+        <div class="statistic">
+            <strong>Todesfälle pro Tag:</strong> <span id="deaths"></span>
+        </div>
+    </div>
+</body>
+</html>

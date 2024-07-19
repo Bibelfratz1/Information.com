@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weltbevölkerung von 1900 bis 2024</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        window.onload = function() {
+            const ctx = document.getElementById('populationChart').getContext('2d');
+            const data = {
+                labels: [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2024],
+                datasets: [{
+                    label: 'Weltbevölkerung',
+                    data: [1650, 1750, 1860, 2070, 2300, 2520, 3030, 3700, 4450, 5320, 6140, 6890, 7700, 7850],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            };
+
+            new Chart(ctx, config);
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Weltbevölkerung von 1900 bis 2024</h1>
+        <canvas id="populationChart" width="600" height="400"></canvas>
+    </div>
+</body>
+</html>
