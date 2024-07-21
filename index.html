@@ -41,7 +41,7 @@
         section {
             margin-bottom: 50px;
         }
-        .calculator, .currency-converter, .world-clock, .world-wealth, .moon-cycle, .water-sources {
+        .calculator, .currency-converter, .world-clock, .world-wealth, .moon-cycle, .water-sources, .temperature {
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
@@ -128,19 +128,34 @@
             position: relative;
             margin: 0 auto;
         }
-        .moon::before {
-            content: '';
-            position: absolute;
+        .moon-phase {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: #f0f0f0;
+            background: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+            clip-path: circle(50px at 50px 50px);
+            background: #000;
             animation: moonPhase 30s linear infinite;
         }
         @keyframes moonPhase {
-            0% { left: 100%; }
-            50% { left: 0; }
-            100% { left: -100%; }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .water-sources ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .water-sources li {
+            background-color: #e0f7fa;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .temperature {
+            text-align: center;
         }
     </style>
 </head>
@@ -224,21 +239,29 @@
             </ol>
         </section>
         <section>
-            <h2>Die Besten Trinkwassersorten in europa Preis Pro liter</h2>
+            <h2>Alle Trinkwassersorten der Welt nach Ort</h2>
             <div class="water-sources">
                 <ul id="water-sources">
-                    <li>Evian - Evian-les-Bains, Frankreich 0,99 euro</li>
-                    <li>Fiji - Viti Levu, Fidschi 3,50 euro</li>
-                    <li>Voss - Iveland, Norwegen 1,69 euro</li>
-                    <li>San Pellegrino - San Pellegrino Terme, Italien 0,99 euro</li>
-                    <li>Gerolsteiner - Gerolstein, Deutschland 0,99 euro</li>
+                    <li>Evian - Evian-les-Bains, Frankreich</li>
+                    <li>Fiji - Viti Levu, Fidschi</li>
+                    <li>Voss - Iveland, Norwegen</li>
+                    <li>San Pellegrino - San Pellegrino Terme, Italien</li>
+                    <li>Gerolsteiner - Gerolstein, Deutschland</li>
                 </ul>
             </div>
         </section>
         <section>
             <h2>Mondzyklus</h2>
             <div class="moon-cycle">
-                <div class="moon"></div>
+                <div class="moon">
+                    <div class="moon-phase"></div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2>Durchschnittliche Erdtemperatur</h2>
+            <div class="temperature">
+                <p id="temperature">Lade Temperaturdaten...</p>
             </div>
         </section>
     </div>
@@ -329,6 +352,27 @@
             const globalWealth = "$400 Billionen";
             document.getElementById('global-wealth').value = globalWealth;
         }
+
+        async function fetchTemperature() {
+            try {
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=0&longitude=0&current_weather=true');
+                const data = await response.json();
+                const temperature = data.current_weather.temperature;
+                document.getElementById('temperature').textContent = `${temperature} °C`;
+            } catch (error) {
+                document.getElementById('temperature').textContent = 'Fehler beim Laden der Temperaturdaten';
+            }
+        }
+
+        function updateMoonPhase() {
+            const moonPhase = new Date().getDate() % 29.53; // Approximate moon cycle
+            const moonPhasePercentage = moonPhase / 29.53;
+            document.querySelector('.moon-phase').style.clipPath = `circle(${50 - moonPhasePercentage * 50}px at 50px 50px)`;
+        }
+
+        // Initialize the moon phase and temperature
+        updateMoonPhase();
+        fetchTemperature();
     </script>
 </body>
 </html>
