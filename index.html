@@ -221,6 +221,7 @@
                     <option value="Atlantic/Reykjavik">Reykjavik (GMT+00:00)</option>
                     <option value="Europe/London">London (GMT+01:00)</option>
                     <option value="Europe/Berlin">Berlin (GMT+02:00)</option>
+                    <option value="Asia/Dubai">Dubai (GMT+04:00)</option>
                     <option value="Asia/Tokyo">Tokyo (GMT+09:00)</option>
                     <option value="Australia/Sydney">Sydney (GMT+10:00)</option>
                 </select>
@@ -407,8 +408,7 @@
 
         async function fetchSeaLevel() {
             try {
-                // Use a public API for sea level data
-                const response = await fetch('https://api.earthdata.nasa.gov/sealevel'); // Placeholder URL
+                const response = await fetch('https://api.sealeveldata.org/current'); // Beispiel-API
                 const data = await response.json();
                 document.getElementById('sea-level').textContent = `Aktueller Meeresspiegel: ${data.seaLevel} m`;
             } catch (error) {
