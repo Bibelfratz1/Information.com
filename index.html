@@ -124,9 +124,7 @@
     <div id="moon-cycle" class="section">
         <h2>Mondzyklus</h2>
         <div class="moon-cycle">
-            <div class="moon">
-                <div class="moon-phase"></div>
-            </div>
+            <div class="moon-phase"></div>
         </div>
     </div>
 
@@ -310,8 +308,8 @@
             const sections = document.querySelectorAll('div.section');
             let found = false;
             sections.forEach(section => {
-                const sectionTitle = section.querySelector('h2').textContent.toLowerCase();
-                if (sectionTitle.includes(query)) {
+                const sectionContent = section.textContent.toLowerCase();
+                if (sectionContent.includes(query)) {
                     section.classList.add('active');
                     found = true;
                 } else {
