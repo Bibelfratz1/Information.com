@@ -153,6 +153,12 @@
             margin: 5px 0;
             padding: 10px;
             border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .water-sources span {
+            font-weight: bold;
         }
         .temperature {
             text-align: center;
@@ -239,14 +245,14 @@
             </ol>
         </section>
         <section>
-            <h2>Alle Trinkwassersorten der Welt nach Ort</h2>
+            <h2>Alle Trinkwassersorten der Welt nach Ort und Preis pro Liter</h2>
             <div class="water-sources">
                 <ul id="water-sources">
-                    <li>Evian - Evian-les-Bains, Frankreich</li>
-                    <li>Fiji - Viti Levu, Fidschi</li>
-                    <li>Voss - Iveland, Norwegen</li>
-                    <li>San Pellegrino - San Pellegrino Terme, Italien</li>
-                    <li>Gerolsteiner - Gerolstein, Deutschland</li>
+                    <li><span>Evian</span> - Evian-les-Bains, Frankreich - <span>€0.60/L</span></li>
+                    <li><span>Fiji</span> - Viti Levu, Fidschi - <span>€1.20/L</span></li>
+                    <li><span>Voss</span> - Iveland, Norwegen - <span>€1.50/L</span></li>
+                    <li><span>San Pellegrino</span> - San Pellegrino Terme, Italien - <span>€0.80/L</span></li>
+                    <li><span>Gerolsteiner</span> - Gerolstein, Deutschland - <span>€0.70/L</span></li>
                 </ul>
             </div>
         </section>
