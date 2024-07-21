@@ -7,40 +7,205 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             background-color: #f0f0f0;
             margin: 0;
             padding: 0;
         }
+        .marquee {
+            width: 100%;
+            overflow: hidden;
+            background: #333;
+            color: white;
+            white-space: nowrap;
+        }
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+        @keyframes marquee {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
-        h1 {
+        h1, h2 {
             color: #333;
         }
-        a {
-            display: block;
-            margin: 20px 0;
-            font-size: 1.2em;
-            color: #0066cc;
-            text-decoration: none;
+        section {
+            margin-bottom: 50px;
         }
-        a:hover {
-            text-decoration: underline;
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .calculator {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .display {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1.5em;
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .buttons button {
+            padding: 20px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .buttons button:hover {
+            background-color: #f0f0f0;
+        }
+        .buttons .operator {
+            background-color: #ffab00;
+            color: white;
+        }
+        .buttons .operator:hover {
+            background-color: #e69600;
+        }
+        .buttons .equals {
+            background-color: #00c853;
+            color: white;
+            grid-column: span 2;
+        }
+        .buttons .equals:hover {
+            background-color: #00b34f;
+        }
+        .buttons .clear {
+            background-color: #d32f2f;
+            color: white;
+            grid-column: span 2;
+        }
+        .buttons .clear:hover {
+            background-color: #b71c1c;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Willkommen</h1>
-        <a href="geburten-und-todesfaelle.html">Geburten und Todesfälle weltweit</a>
-        <a href="weltbevoelkerung.html">Weltbevölkerung von 1900 bis 2024</a>
-        <a href="taschenrechner.html">Taschenrechner</a>
+    <div class="marquee">
+        <span>Bibelfratz Website herzlich willkommen</span>
     </div>
+    <div class="container">
+        <h1>Willkommen zur Bibelfratz Website</h1>
+        <section>
+            <h2>Geburten und Todesfälle weltweit</h2>
+            <iframe src="geburten-und-todesfaelle.html"></iframe>
+        </section>
+        <section>
+            <h2>Weltbevölkerung von 1900 bis 2024</h2>
+            <iframe src="weltbevoelkerung.html"></iframe>
+        </section>
+        <section>
+            <h2>Taschenrechner</h2>
+            <div class="calculator">
+                <input type="text" id="display" class="display" disabled>
+                <div class="buttons">
+                    <button onclick="appendNumber('7')">7</button>
+                    <button onclick="appendNumber('8')">8</button>
+                    <button onclick="appendNumber('9')">9</button>
+                    <button class="operator" onclick="chooseOperation('/')">/</button>
+                    <button onclick="appendNumber('4')">4</button>
+                    <button onclick="appendNumber('5')">5</button>
+                    <button onclick="appendNumber('6')">6</button>
+                    <button class="operator" onclick="chooseOperation('*')">*</button>
+                    <button onclick="appendNumber('1')">1</button>
+                    <button onclick="appendNumber('2')">2</button>
+                    <button onclick="appendNumber('3')">3</button>
+                    <button class="operator" onclick="chooseOperation('-')">-</button>
+                    <button onclick="appendNumber('0')">0</button>
+                    <button onclick="appendNumber('.')">.</button>
+                    <button class="equals" onclick="compute()">=</button>
+                    <button class="operator" onclick="chooseOperation('+')">+</button>
+                    <button class="clear" onclick="clearDisplay()">C</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentOperand = '';
+        let previousOperand = '';
+        let operation = undefined;
+
+        function appendNumber(number) {
+            if (number === '.' && currentOperand.includes('.')) return;
+            currentOperand = currentOperand.toString() + number.toString();
+            updateDisplay();
+        }
+
+        function chooseOperation(op) {
+            if (currentOperand === '') return;
+            if (previousOperand !== '') {
+                compute();
+            }
+            operation = op;
+            previousOperand = currentOperand;
+            currentOperand = '';
+        }
+
+        function compute() {
+            let computation;
+            const prev = parseFloat(previousOperand);
+            const current = parseFloat(currentOperand);
+            if (isNaN(prev) || isNaN(current)) return;
+            switch (operation) {
+                case '+':
+                    computation = prev + current;
+                    break;
+                case '-':
+                    computation = prev - current;
+                    break;
+                case '*':
+                    computation = prev * current;
+                    break;
+                case '/':
+                    computation = prev / current;
+                    break;
+                default:
+                    return;
+            }
+            currentOperand = computation;
+            operation = undefined;
+            previousOperand = '';
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            display.value = currentOperand;
+        }
+
+        function clearDisplay() {
+            currentOperand = '';
+            previousOperand = '';
+            operation = undefined;
+            updateDisplay();
+        }
+    </script>
 </body>
 </html>
+
