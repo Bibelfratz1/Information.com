@@ -47,7 +47,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        .calculator, .currency-converter {
+        .calculator, .currency-converter, .world-clock {
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
@@ -103,7 +103,8 @@
         .buttons .clear:hover {
             background-color: #b71c1c;
         }
-        .currency-converter input, .currency-converter select {
+        .currency-converter input, .currency-converter select,
+        .world-clock select {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -111,7 +112,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        .currency-converter button {
+        .currency-converter button, .world-clock button {
             width: 100%;
             padding: 10px;
             font-size: 1.2em;
@@ -122,7 +123,7 @@
             color: white;
             transition: background-color 0.3s;
         }
-        .currency-converter button:hover {
+        .currency-converter button:hover, .world-clock button:hover {
             background-color: #00b34f;
         }
     </style>
@@ -176,6 +177,27 @@
                 </select>
                 <button onclick="convertCurrency()">Umrechnen</button>
                 <input type="text" id="result" class="display" disabled placeholder="Ergebnis">
+            </div>
+        </section>
+        <section>
+            <h2>Weltzeitzonen-Uhr</h2>
+            <div class="world-clock">
+                <select id="timezone">
+                    <option value="Pacific/Honolulu">Honolulu (GMT-10:00)</option>
+                    <option value="America/Anchorage">Anchorage (GMT-09:00)</option>
+                    <option value="America/Los_Angeles">Los Angeles (GMT-08:00)</option>
+                    <option value="America/Denver">Denver (GMT-07:00)</option>
+                    <option value="America/Chicago">Chicago (GMT-06:00)</option>
+                    <option value="America/New_York">New York (GMT-05:00)</option>
+                    <option value="Atlantic/Reykjavik">Reykjavik (GMT+00:00)</option>
+                    <option value="Europe/London">London (GMT+01:00)</option>
+                    <option value="Europe/Berlin">Berlin (GMT+02:00)</option>
+                    <option value="Asia/Dubai">Dubai (GMT+04:00)</option>
+                    <option value="Asia/Tokyo">Tokyo (GMT+09:00)</option>
+                    <option value="Australia/Sydney">Sydney (GMT+10:00)</option>
+                </select>
+                <button onclick="showTime()">Zeitzone anzeigen</button>
+                <input type="text" id="clock" class="display" disabled placeholder="Uhrzeit">
             </div>
         </section>
     </div>
@@ -260,6 +282,33 @@
             }
 
             document.getElementById('result').value = result.toFixed(2);
+        }
+
+        function showTime() {
+            const timezone = document.getElementById('timezone').value;
+            const now = new Date();
+            const utcOffset = now.getTimezoneOffset() * 60000;
+            const localTime = now.getTime() + utcOffset;
+            const selectedTime = new Date(localTime + (3600000 * getTimezoneOffset(timezone)));
+            document.getElementById('clock').value = selectedTime.toLocaleTimeString();
+        }
+
+        function getTimezoneOffset(timezone) {
+            const offsets = {
+                "Pacific/Honolulu": -10,
+                "America/Anchorage": -9,
+                "America/Los_Angeles": -8,
+                "America/Denver": -7,
+                "America/Chicago": -6,
+                "America/New_York": -5,
+                "Atlantic/Reykjavik": 0,
+                "Europe/London": 1,
+                "Europe/Berlin": 2,
+                "Asia/Dubai": 4,
+                "Asia/Tokyo": 9,
+                "Australia/Sydney": 10
+            };
+            return offsets[timezone];
         }
     </script>
 </body>
