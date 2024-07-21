@@ -47,7 +47,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        .calculator {
+        .calculator, .currency-converter {
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
@@ -103,6 +103,28 @@
         .buttons .clear:hover {
             background-color: #b71c1c;
         }
+        .currency-converter input, .currency-converter select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            font-size: 1.2em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .currency-converter button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #00c853;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .currency-converter button:hover {
+            background-color: #00b34f;
+        }
     </style>
 </head>
 <body>
@@ -142,6 +164,18 @@
                     <button class="operator" onclick="chooseOperation('+')">+</button>
                     <button class="clear" onclick="clearDisplay()">C</button>
                 </div>
+            </div>
+        </section>
+        <section>
+            <h2>Währungsrechner (Dollar zu Euro und umgekehrt)</h2>
+            <div class="currency-converter">
+                <input type="number" id="amount" placeholder="Betrag">
+                <select id="currency">
+                    <option value="usdToEur">Dollar zu Euro</option>
+                    <option value="eurToUsd">Euro zu Dollar</option>
+                </select>
+                <button onclick="convertCurrency()">Umrechnen</button>
+                <input type="text" id="result" class="display" disabled placeholder="Ergebnis">
             </div>
         </section>
     </div>
@@ -205,7 +239,28 @@
             operation = undefined;
             updateDisplay();
         }
+
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const currency = document.getElementById('currency').value;
+            let result;
+
+            if (isNaN(amount)) {
+                alert("Bitte geben Sie einen gültigen Betrag ein.");
+                return;
+            }
+
+            const usdToEurRate = 0.85; // Beispielkurs, den Sie durch aktuelle Daten ersetzen können
+            const eurToUsdRate = 1.18; // Beispielkurs, den Sie durch aktuelle Daten ersetzen können
+
+            if (currency === "usdToEur") {
+                result = amount * usdToEurRate;
+            } else {
+                result = amount * eurToUsdRate;
+            }
+
+            document.getElementById('result').value = result.toFixed(2);
+        }
     </script>
 </body>
 </html>
-
