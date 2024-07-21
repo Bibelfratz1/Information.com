@@ -41,7 +41,7 @@
         section {
             margin-bottom: 50px;
         }
-        .calculator, .currency-converter, .world-clock, .world-wealth, .moon-cycle, .water-sources, .temperature {
+        .calculator, .currency-converter, .world-clock, .world-wealth, .moon-cycle, .water-sources, .temperature, .sun-times, .sea-level {
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
@@ -160,7 +160,7 @@
         .water-sources span {
             font-weight: bold;
         }
-        .temperature {
+        .temperature, .sun-times, .sea-level {
             text-align: center;
         }
     </style>
@@ -221,7 +221,6 @@
                     <option value="Atlantic/Reykjavik">Reykjavik (GMT+00:00)</option>
                     <option value="Europe/London">London (GMT+01:00)</option>
                     <option value="Europe/Berlin">Berlin (GMT+02:00)</option>
-                    <option value="Asia/Dubai">Dubai (GMT+04:00)</option>
                     <option value="Asia/Tokyo">Tokyo (GMT+09:00)</option>
                     <option value="Australia/Sydney">Sydney (GMT+10:00)</option>
                 </select>
@@ -245,14 +244,14 @@
             </ol>
         </section>
         <section>
-            <h2>Alle Trinkwassersorten der Welt nach Ort und Preis pro Liter</h2>
+            <h2>Alle Trinkwassersorten der Welt nach Ort und Preis</h2>
             <div class="water-sources">
                 <ul id="water-sources">
-                    <li><span>Evian</span> - Evian-les-Bains, Frankreich - <span>€0.60/L</span></li>
-                    <li><span>Fiji</span> - Viti Levu, Fidschi - <span>€1.20/L</span></li>
-                    <li><span>Voss</span> - Iveland, Norwegen - <span>€1.50/L</span></li>
-                    <li><span>San Pellegrino</span> - San Pellegrino Terme, Italien - <span>€0.80/L</span></li>
-                    <li><span>Gerolsteiner</span> - Gerolstein, Deutschland - <span>€0.70/L</span></li>
+                    <li>Evian - Evian-les-Bains, Frankreich <span>€0.50/L</span></li>
+                    <li>Fiji - Viti Levu, Fidschi <span>$0.70/L</span></li>
+                    <li>Voss - Iveland, Norwegen <span>€1.00/L</span></li>
+                    <li>San Pellegrino - San Pellegrino Terme, Italien <span>€0.80/L</span></li>
+                    <li>Gerolsteiner - Gerolstein, Deutschland <span>€0.60/L</span></li>
                 </ul>
             </div>
         </section>
@@ -268,6 +267,20 @@
             <h2>Durchschnittliche Erdtemperatur</h2>
             <div class="temperature">
                 <p id="temperature">Lade Temperaturdaten...</p>
+            </div>
+        </section>
+        <section>
+            <h2>Sonnenaufgang und Sonnenuntergang</h2>
+            <div class="sun-times">
+                <input type="text" id="sunrise" class="display" disabled placeholder="Sonnenaufgang">
+                <input type="text" id="sunset" class="display" disabled placeholder="Sonnenuntergang">
+                <button onclick="fetchSunTimes()">Aktualisieren</button>
+            </div>
+        </section>
+        <section>
+            <h2>Meeresspiegel</h2>
+            <div class="sea-level">
+                <p id="sea-level">Lade Meeresspiegel-Daten...</p>
             </div>
         </section>
     </div>
@@ -376,9 +389,38 @@
             document.querySelector('.moon-phase').style.clipPath = `circle(${50 - moonPhasePercentage * 50}px at 50px 50px)`;
         }
 
-        // Initialize the moon phase and temperature
+        async function fetchSunTimes() {
+            const latitude = 52.52;  // Example: Berlin latitude
+            const longitude = 13.405; // Example: Berlin longitude
+            try {
+                const response = await fetch(`https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}`);
+                const data = await response.json();
+                const sunrise = new Date(data.results.sunrise).toLocaleTimeString('de-DE');
+                const sunset = new Date(data.results.sunset).toLocaleTimeString('de-DE');
+                document.getElementById('sunrise').value = `Sonnenaufgang: ${sunrise}`;
+                document.getElementById('sunset').value = `Sonnenuntergang: ${sunset}`;
+            } catch (error) {
+                document.getElementById('sunrise').value = 'Fehler beim Laden der Sonnenaufgangsdaten';
+                document.getElementById('sunset').value = 'Fehler beim Laden der Sonnenuntergangsdaten';
+            }
+        }
+
+        async function fetchSeaLevel() {
+            try {
+                // Use a public API for sea level data
+                const response = await fetch('https://api.earthdata.nasa.gov/sealevel'); // Placeholder URL
+                const data = await response.json();
+                document.getElementById('sea-level').textContent = `Aktueller Meeresspiegel: ${data.seaLevel} m`;
+            } catch (error) {
+                document.getElementById('sea-level').textContent = 'Fehler beim Laden der Meeresspiegeldaten';
+            }
+        }
+
+        // Initialize the moon phase, temperature, sun times, and sea level
         updateMoonPhase();
         fetchTemperature();
+        fetchSunTimes();
+        fetchSeaLevel();
     </script>
 </body>
 </html>
