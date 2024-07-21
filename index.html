@@ -41,13 +41,7 @@
         section {
             margin-bottom: 50px;
         }
-        iframe {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .calculator, .currency-converter, .world-clock {
+        .calculator, .currency-converter, .world-clock, .world-wealth, .moon-cycle, .water-sources {
             max-width: 400px;
             margin: 0 auto;
             padding: 20px;
@@ -104,7 +98,7 @@
             background-color: #b71c1c;
         }
         .currency-converter input, .currency-converter select,
-        .world-clock select {
+        .world-clock select, .world-wealth input {
             width: 100%;
             padding: 10px;
             margin: 5px 0;
@@ -112,7 +106,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        .currency-converter button, .world-clock button {
+        .currency-converter button, .world-clock button, .world-wealth button {
             width: 100%;
             padding: 10px;
             font-size: 1.2em;
@@ -123,8 +117,30 @@
             color: white;
             transition: background-color 0.3s;
         }
-        .currency-converter button:hover, .world-clock button:hover {
+        .currency-converter button:hover, .world-clock button:hover, .world-wealth button:hover {
             background-color: #00b34f;
+        }
+        .moon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: gray;
+            position: relative;
+            margin: 0 auto;
+        }
+        .moon::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            animation: moonPhase 30s linear infinite;
+        }
+        @keyframes moonPhase {
+            0% { left: 100%; }
+            50% { left: 0; }
+            100% { left: -100%; }
         }
     </style>
 </head>
@@ -134,14 +150,6 @@
     </div>
     <div class="container">
         <h1>Willkommen zur Bibelfratz Website</h1>
-        <section>
-            <h2>Geburten und Todesfälle weltweit</h2>
-            <iframe src="geburten-und-todesfaelle.html"></iframe>
-        </section>
-        <section>
-            <h2>Weltbevölkerung von 1900 bis 2024</h2>
-            <iframe src="weltbevoelkerung.html"></iframe>
-        </section>
         <section>
             <h2>Taschenrechner</h2>
             <div class="calculator">
@@ -200,36 +208,67 @@
                 <input type="text" id="clock" class="display" disabled placeholder="Uhrzeit">
             </div>
         </section>
+        <section>
+            <h2>Aktuelles Geldvermögen auf der Welt</h2>
+            <div class="world-wealth">
+                <input type="text" id="global-wealth" class="display" disabled placeholder="Weltweites Vermögen">
+                <button onclick="updateGlobalWealth()">Aktualisieren</button>
+            </div>
+            <h3>Die 5 reichsten Personen der Welt</h3>
+            <ol id="richest-people">
+                <li>Elon Musk - $220 Milliarden</li>
+                <li>Bernard Arnault - $190 Milliarden</li>
+                <li>Jeff Bezos - $170 Milliarden</li>
+                <li>Bill Gates - $130 Milliarden</li>
+                <li>Mark Zuckerberg - $120 Milliarden</li>
+            </ol>
+        </section>
+        <section>
+            <h2>Alle Trinkwassersorten der Welt nach Ort</h2>
+            <div class="water-sources">
+                <ul id="water-sources">
+                    <li>Evian - Evian-les-Bains, Frankreich</li>
+                    <li>Fiji - Viti Levu, Fidschi</li>
+                    <li>Voss - Iveland, Norwegen</li>
+                    <li>San Pellegrino - San Pellegrino Terme, Italien</li>
+                    <li>Gerolsteiner - Gerolstein, Deutschland</li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <h2>Mondzyklus</h2>
+            <div class="moon-cycle">
+                <div class="moon"></div>
+            </div>
+        </section>
     </div>
-
     <script>
-        let display = document.getElementById('display');
-        let currentOperand = '';
-        let previousOperand = '';
-        let operation = undefined;
+        let currentOperation = '';
+        let previousValue = '';
+        let currentValue = '';
 
         function appendNumber(number) {
-            if (number === '.' && currentOperand.includes('.')) return;
-            currentOperand = currentOperand.toString() + number.toString();
+            if (currentValue.includes('.') && number === '.') return;
+            currentValue = currentValue.toString() + number.toString();
             updateDisplay();
         }
 
-        function chooseOperation(op) {
-            if (currentOperand === '') return;
-            if (previousOperand !== '') {
+        function chooseOperation(operation) {
+            if (currentValue === '') return;
+            if (previousValue !== '') {
                 compute();
             }
-            operation = op;
-            previousOperand = currentOperand;
-            currentOperand = '';
+            currentOperation = operation;
+            previousValue = currentValue;
+            currentValue = '';
         }
 
         function compute() {
             let computation;
-            const prev = parseFloat(previousOperand);
-            const current = parseFloat(currentOperand);
+            const prev = parseFloat(previousValue);
+            const current = parseFloat(currentValue);
             if (isNaN(prev) || isNaN(current)) return;
-            switch (operation) {
+            switch (currentOperation) {
                 case '+':
                     computation = prev + current;
                     break;
@@ -245,70 +284,50 @@
                 default:
                     return;
             }
-            currentOperand = computation;
-            operation = undefined;
-            previousOperand = '';
+            currentValue = computation;
+            currentOperation = '';
+            previousValue = '';
             updateDisplay();
         }
 
         function updateDisplay() {
-            display.value = currentOperand;
+            document.getElementById('display').value = currentValue;
         }
 
         function clearDisplay() {
-            currentOperand = '';
-            previousOperand = '';
-            operation = undefined;
+            currentValue = '';
+            previousValue = '';
+            currentOperation = '';
             updateDisplay();
         }
 
-        function convertCurrency() {
-            const amount = parseFloat(document.getElementById('amount').value);
+        async function convertCurrency() {
+            const amount = document.getElementById('amount').value;
             const currency = document.getElementById('currency').value;
-            let result;
-
-            if (isNaN(amount)) {
-                alert("Bitte geben Sie einen gültigen Betrag ein.");
-                return;
-            }
-
-            const usdToEurRate = 0.85; // Beispielkurs, den Sie durch aktuelle Daten ersetzen können
-            const eurToUsdRate = 1.18; // Beispielkurs, den Sie durch aktuelle Daten ersetzen können
-
-            if (currency === "usdToEur") {
-                result = amount * usdToEurRate;
+            if (amount === '') return;
+            const response = await fetch(`https://api.exchangerate-api.com/v4/latest/USD`);
+            const data = await response.json();
+            let rate;
+            if (currency === 'usdToEur') {
+                rate = data.rates.EUR;
             } else {
-                result = amount * eurToUsdRate;
+                rate = 1 / data.rates.EUR;
             }
-
+            const result = amount * rate;
             document.getElementById('result').value = result.toFixed(2);
         }
 
         function showTime() {
             const timezone = document.getElementById('timezone').value;
-            const now = new Date();
-            const utcOffset = now.getTimezoneOffset() * 60000;
-            const localTime = now.getTime() + utcOffset;
-            const selectedTime = new Date(localTime + (3600000 * getTimezoneOffset(timezone)));
-            document.getElementById('clock').value = selectedTime.toLocaleTimeString();
+            const date = new Date();
+            const localTime = date.toLocaleTimeString('de-DE', { timeZone: timezone });
+            document.getElementById('clock').value = localTime;
         }
 
-        function getTimezoneOffset(timezone) {
-            const offsets = {
-                "Pacific/Honolulu": -10,
-                "America/Anchorage": -9,
-                "America/Los_Angeles": -8,
-                "America/Denver": -7,
-                "America/Chicago": -6,
-                "America/New_York": -5,
-                "Atlantic/Reykjavik": 0,
-                "Europe/London": 1,
-                "Europe/Berlin": 2,
-                "Asia/Dubai": 4,
-                "Asia/Tokyo": 9,
-                "Australia/Sydney": 10
-            };
-            return offsets[timezone];
+        async function updateGlobalWealth() {
+            // Placeholder for actual API call
+            const globalWealth = "$400 Billionen";
+            document.getElementById('global-wealth').value = globalWealth;
         }
     </script>
 </body>
