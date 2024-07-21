@@ -34,7 +34,7 @@
             text-align: center;
         }
         .search-bar input {
-            width: 80%;
+            width: 70%;
             padding: 10px;
             font-size: 1em;
             border: none;
@@ -200,7 +200,7 @@
     </div>
     <div class="container">
         <h1>Willkommen zur Bibelfratz Website</h1>
-        <section id="calculator">
+        <section id="calculator" class="searchable">
             <h2>Taschenrechner</h2>
             <div class="calculator">
                 <input type="text" id="display" class="display" disabled>
@@ -225,7 +225,7 @@
                 </div>
             </div>
         </section>
-        <section id="currency-converter">
+        <section id="currency-converter" class="searchable">
             <h2>Währungsrechner (Dollar zu Euro und umgekehrt)</h2>
             <div class="currency-converter">
                 <input type="number" id="amount" placeholder="Betrag">
@@ -237,7 +237,7 @@
                 <input type="text" id="result" class="display" disabled placeholder="Ergebnis">
             </div>
         </section>
-        <section id="world-clock">
+        <section id="world-clock" class="searchable">
             <h2>Weltzeitzonen-Uhr</h2>
             <div class="world-clock">
                 <select id="timezone">
@@ -258,7 +258,7 @@
                 <input type="text" id="clock" class="display" disabled placeholder="Uhrzeit">
             </div>
         </section>
-        <section id="world-wealth">
+        <section id="world-wealth" class="searchable">
             <h2>Aktuelles Geldvermögen auf der Welt</h2>
             <div class="world-wealth">
                 <input type="text" id="global-wealth" class="display" disabled placeholder="Weltweites Vermögen">
@@ -273,7 +273,35 @@
                 <li>Mark Zuckerberg - $120 Milliarden</li>
             </ol>
         </section>
-        <section id="water-sources">
+        <section id="moon-cycle" class="searchable">
+            <h2>Mondzyklus</h2>
+            <div class="moon-cycle">
+                <div class="moon">
+                    <div class="moon-phase"></div>
+                </div>
+            </div>
+        </section>
+        <section id="temperature" class="searchable">
+            <h2>Durchschnittliche Erdtemperatur</h2>
+            <div class="temperature">
+                <p id="temperature">Lade Temperaturdaten...</p>
+            </div>
+        </section>
+        <section id="sun-times" class="searchable">
+            <h2>Sonnenaufgang und Sonnenuntergang</h2>
+            <div class="sun-times">
+                <input type="text" id="sunrise" class="display" disabled placeholder="Sonnenaufgang">
+                <input type="text" id="sunset" class="display" disabled placeholder="Sonnenuntergang">
+                <button onclick="fetchSunTimes()">Aktualisieren</button>
+            </div>
+        </section>
+        <section id="sea-level" class="searchable">
+            <h2>Meeresspiegel</h2>
+            <div class="sea-level">
+                <p id="sea-level">Lade Meeresspiegel-Daten...</p>
+            </div>
+        </section>
+        <section id="water-sources" class="searchable">
             <h2>Alle Trinkwassersorten der Welt nach Ort und Preis</h2>
             <div class="water-sources">
                 <ul>
@@ -283,34 +311,6 @@
                     <li>San Pellegrino - San Pellegrino Terme, Italien <span>€0.80/L</span></li>
                     <li>Gerolsteiner - Gerolstein, Deutschland <span>€0.60/L</span></li>
                 </ul>
-            </div>
-        </section>
-        <section id="moon-cycle">
-            <h2>Mondzyklus</h2>
-            <div class="moon-cycle">
-                <div class="moon">
-                    <div class="moon-phase"></div>
-                </div>
-            </div>
-        </section>
-        <section id="temperature">
-            <h2>Durchschnittliche Erdtemperatur</h2>
-            <div class="temperature">
-                <p id="temperature">Lade Temperaturdaten...</p>
-            </div>
-        </section>
-        <section id="sun-times">
-            <h2>Sonnenaufgang und Sonnenuntergang</h2>
-            <div class="sun-times">
-                <input type="text" id="sunrise" class="display" disabled placeholder="Sonnenaufgang">
-                <input type="text" id="sunset" class="display" disabled placeholder="Sonnenuntergang">
-                <button onclick="fetchSunTimes()">Aktualisieren</button>
-            </div>
-        </section>
-        <section id="sea-level">
-            <h2>Meeresspiegel</h2>
-            <div class="sea-level">
-                <p id="sea-level">Lade Meeresspiegel-Daten...</p>
             </div>
         </section>
     </div>
@@ -448,10 +448,10 @@
 
         function search() {
             const query = document.getElementById('search-input').value.toLowerCase();
-            const sections = document.querySelectorAll('section');
+            const sections = document.querySelectorAll('section.searchable');
             sections.forEach(section => {
-                const sectionId = section.id;
-                if (sectionId.includes(query)) {
+                const sectionTitle = section.querySelector('h2').textContent.toLowerCase();
+                if (sectionTitle.includes(query)) {
                     section.style.display = 'block';
                 } else {
                     section.style.display = 'none';
