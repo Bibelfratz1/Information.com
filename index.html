@@ -241,6 +241,104 @@
         let previousValue = '';
         let currentValue = '';
 
+        // Funktion für den Taschenrechner
+        function appendNumber(number) {
+            const display = document.getElementById('display');
+            display.value = display.value === '0' ? number : display.value + number;
+        }
+
+        function chooseOperation(operation) {
+            previousValue = document.getElementById('display').value;
+            currentOperation = operation;
+            document.getElementById('display').value = '';
+        }
+
+        function compute() {
+            currentValue = document.getElementById('display').value;
+            let result;
+            switch (currentOperation) {
+                case '+':
+                    result = parseFloat(previousValue) + parseFloat(currentValue);
+                    break;
+                case '-':
+                    result = parseFloat(previousValue) - parseFloat(currentValue);
+                    break;
+                case '*':
+                    result = parseFloat(previousValue) * parseFloat(currentValue);
+                    break;
+                case '/':
+                    result = parseFloat(previousValue) / parseFloat(currentValue);
+                    break;
+                default:
+                    return;
+            }
+            document.getElementById('display').value = result;
+            currentOperation = '';
+        }
+
+        function clearDisplay() {
+            document.getElementById('display').value = '';
+            previousValue = '';
+            currentOperation = '';
+        }
+
+        // Funktion für den Währungsumrechner
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const currency = document.getElementById('currency').value;
+            let result;
+
+            if (currency === 'usdToEur') {
+                result = amount * 0.85; // Beispielkurs
+            } else if (currency === 'eurToUsd') {
+                result = amount * 1.18; // Beispielkurs
+            }
+
+            document.getElementById('result').value = result.toFixed(2);
+        }
+
+        // Funktion für die Weltzeituhr
+        function showTime() {
+            const timezoneOffset = parseInt(document.getElementById('timezone').value);
+            const now = new Date();
+            const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+            const localTime = new Date(utc + (3600000 * timezoneOffset));
+            const timeString = localTime.toLocaleTimeString();
+            document.getElementById('clock').value = timeString;
+        }
+
+        // Funktion für die Mondphase
+        function updateMoonPhase() {
+            const phaseImages = {
+                'new': 'https://github.com/Bibelfratz1/Information.com/raw/main/new_moon.png',
+                'waxing': 'https://github.com/Bibelfratz1/Information.com/raw/main/waxing_crescent.png',
+                'full': 'https://github.com/Bibelfratz1/Information.com/raw/main/full_moon.png',
+                'waning': 'https://github.com/Bibelfratz1/Information.com/raw/main/waning_gibbous.png'
+            };
+
+            const phases = ['new', 'waxing', 'full', 'waning'];
+            const currentPhase = phases[Math.floor(Math.random() * phases.length)];
+            document.getElementById('moon-image').src = phaseImages[currentPhase];
+            document.getElementById('moon-phase-text').textContent = `Aktuelle Mondphase: ${currentPhase.charAt(0).toUpperCase() + currentPhase.slice(1)} Mond`;
+        }
+
+        // Funktion zum Wechseln der Sprache
+        function changeLanguage() {
+            const lang = document.getElementById('language').value;
+            document.getElementById('header-title').textContent = translations[lang]['header-title'];
+            document.getElementById('marquee-text').textContent = translations[lang]['marquee-text'];
+            document.getElementById('calculator-title').textContent = translations[lang]['calculator-title'];
+            document.getElementById('currency-title').textContent = translations[lang]['currency-title'];
+            document.getElementById('world-clock-title').textContent = translations[lang]['world-clock-title'];
+            document.getElementById('moon-phase-title').textContent = translations[lang]['moon-phase-title'];
+            document.getElementById('moon-phase-text').textContent = translations[lang]['moon-phase-text'];
+            document.getElementById('wealth-info-title').textContent = translations[lang]['wealth-info-title'];
+            document.getElementById('top-richest-title').textContent = translations[lang]['top-richest-title'];
+            document.getElementById('temperature-info-title').textContent = translations[lang]['temperature-info-title'];
+            document.getElementById('sun-times-title').textContent = translations[lang]['sun-times-title'];
+            document.getElementById('sea-level-title').textContent = translations[lang]['sea-level-title'];
+        }
+
         const translations = {
             'de': {
                 'header-title': 'Website für wichtige Sachen',
@@ -285,38 +383,6 @@
                 'sea-level-title': 'Niveau de la Mer Actuel'
             }
         };
-
-        function changeLanguage() {
-            const lang = document.getElementById('language').value;
-            document.getElementById('header-title').textContent = translations[lang]['header-title'];
-            document.getElementById('marquee-text').textContent = translations[lang]['marquee-text'];
-            document.getElementById('calculator-title').textContent = translations[lang]['calculator-title'];
-            document.getElementById('currency-title').textContent = translations[lang]['currency-title'];
-            document.getElementById('world-clock-title').textContent = translations[lang]['world-clock-title'];
-            document.getElementById('moon-phase-title').textContent = translations[lang]['moon-phase-title'];
-            document.getElementById('moon-phase-text').textContent = translations[lang]['moon-phase-text'];
-            document.getElementById('wealth-info-title').textContent = translations[lang]['wealth-info-title'];
-            document.getElementById('top-richest-title').textContent = translations[lang]['top-richest-title'];
-            document.getElementById('temperature-info-title').textContent = translations[lang]['temperature-info-title'];
-            document.getElementById('sun-times-title').textContent = translations[lang]['sun-times-title'];
-            document.getElementById('sea-level-title').textContent = translations[lang]['sea-level-title'];
-        }
-
-        let currentPhase = '';
-
-        function updateMoonPhase() {
-            const phaseImages = {
-                'new': 'https://github.com/Bibelfratz1/Information.com/raw/main/new_moon.png',
-                'waxing': 'https://github.com/Bibelfratz1/Information.com/raw/main/waxing_crescent.png',
-                'full': 'https://github.com/Bibelfratz1/Information.com/raw/main/full_moon.png',
-                'waning': 'https://github.com/Bibelfratz1/Information.com/raw/main/waning_gibbous.png'
-            };
-
-            const phases = ['new', 'waxing', 'full', 'waning'];
-            currentPhase = phases[Math.floor(Math.random() * phases.length)];
-            document.getElementById('moon-image').src = phaseImages[currentPhase];
-            document.getElementById('moon-phase-text').textContent = `Aktuelle Mondphase: ${currentPhase.charAt(0).toUpperCase() + currentPhase.slice(1)} Mond`;
-        }
 
         document.addEventListener('DOMContentLoaded', () => {
             updateMoonPhase();
