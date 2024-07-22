@@ -169,16 +169,16 @@
             <h2>Weltzeituhr</h2>
             <div class="world-clock">
                 <select id="timezone">
-                    <option value="America/Anchorage">Anchorage (GMT-09:00)</option>
-                    <option value="America/Los_Angeles">Los Angeles (GMT-08:00)</option>
-                    <option value="America/Denver">Denver (GMT-07:00)</option>
-                    <option value="America/Chicago">Chicago (GMT-06:00)</option>
-                    <option value="America/New_York">New York (GMT-05:00)</option>
-                    <option value="Europe/London">London (GMT+00:00)</option>
-                    <option value="Europe/Paris">Paris (GMT+01:00)</option>
-                    <option value="Europe/Berlin">Berlin (GMT+02:00)</option>
-                    <option value="Asia/Tokyo">Tokyo (GMT+09:00)</option>
-                    <option value="Australia/Sydney">Sydney (GMT+10:00)</option>
+                    <option value="-9">Anchorage (GMT-09:00)</option>
+                    <option value="-8">Los Angeles (GMT-08:00)</option>
+                    <option value="-7">Denver (GMT-07:00)</option>
+                    <option value="-6">Chicago (GMT-06:00)</option>
+                    <option value="-5">New York (GMT-05:00)</option>
+                    <option value="0">London (GMT+00:00)</option>
+                    <option value="1">Paris (GMT+01:00)</option>
+                    <option value="2">Berlin (GMT+02:00)</option>
+                    <option value="9">Tokyo (GMT+09:00)</option>
+                    <option value="10">Sydney (GMT+10:00)</option>
                 </select>
                 <button onclick="showTime()">Zeitzone anzeigen</button>
                 <input type="text" id="clock" disabled placeholder="Uhrzeit">
@@ -198,11 +198,11 @@
             <p id="total-wealth">100 Billionen USD</p>
             <h2>Die 5 reichsten Menschen der Welt</h2>
             <ul id="top-richest">
-                <li>Jeff Bezos - 177 Milliarden USD</li>
-                <li>Elon Musk - 151 Milliarden USD</li>
-                <li>Bernard Arnault - 150 Milliarden USD</li>
+                <li>Bernard Arnault - 211 Milliarden USD</li>
+                <li>Elon Musk - 198 Milliarden USD</li>
+                <li>Jeff Bezos - 138 Milliarden USD</li>
                 <li>Bill Gates - 124 Milliarden USD</li>
-                <li>Mark Zuckerberg - 97 Milliarden USD</li>
+                <li>Mark Zuckerberg - 115 Milliarden USD</li>
             </ul>
         </div>
 
@@ -324,7 +324,6 @@
         function updateMoonPhase() {
             const moonPhase = document.querySelector('.moon-phase');
             const phaseText = document.getElementById('moon-phase-text');
-            // Statische Daten für die aktuelle Mondphase
             const phases = ['Neumond', 'Zunehmender Mond', 'Vollmond', 'Abnehmender Mond'];
             const currentPhase = phases[Math.floor(Math.random() * phases.length)];
             phaseText.textContent = `Aktuelle Mondphase: ${currentPhase}`;
