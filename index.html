@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+v<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
@@ -285,7 +285,7 @@
         }
 
         function convertCurrency() {
-            const amount = document.getElementById('amount').value;
+            const amount = parseFloat(document.getElementById('amount').value);
             const currency = document.getElementById('currency').value;
             let result;
             if (currency === 'usdToEur') {
@@ -297,28 +297,12 @@
         }
 
         function showTime() {
-            const timezone = document.getElementById('timezone').value;
+            const timezoneOffset = parseInt(document.getElementById('timezone').value);
             let time = new Date();
-            const offset = time.getTimezoneOffset() * 60000;
-            const utcTime = time.getTime() + offset;
-            let timeInTimezone = new Date(utcTime + (3600000 * timezoneOffset(timezone)));
+            let localOffset = time.getTimezoneOffset() * 60000;
+            let utcTime = time.getTime() + localOffset;
+            let timeInTimezone = new Date(utcTime + (3600000 * timezoneOffset));
             document.getElementById('clock').value = timeInTimezone.toLocaleTimeString();
-        }
-
-        function timezoneOffset(timezone) {
-            const offsets = {
-                "America/Anchorage": -9,
-                "America/Los_Angeles": -8,
-                "America/Denver": -7,
-                "America/Chicago": -6,
-                "America/New_York": -5,
-                "Europe/London": 0,
-                "Europe/Paris": 1,
-                "Europe/Berlin": 2,
-                "Asia/Tokyo": 9,
-                "Australia/Sydney": 10
-            };
-            return offsets[timezone];
         }
 
         function updateMoonPhase() {
