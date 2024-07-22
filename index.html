@@ -23,7 +23,8 @@
             font-size: 24px;
         }
         .container {
-            width: 80%;
+            width: 90%;
+            max-width: 1200px;
             margin: 20px 0;
             display: flex;
             flex-wrap: wrap;
@@ -40,6 +41,8 @@
         }
         .section h2 {
             margin-top: 0;
+            font-size: 20px;
+            text-align: center;
         }
         .calculator, .world-clock, .currency-converter {
             display: flex;
@@ -51,6 +54,7 @@
             padding: 10px;
             margin: 5px 0;
             font-size: 18px;
+            text-align: center;
         }
         .calculator button, .currency-converter button, .world-clock button {
             width: 23%;
@@ -62,12 +66,16 @@
             background-color: #007bff;
             color: white;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .calculator button:hover, .currency-converter button:hover, .world-clock button:hover {
+            background-color: #0056b3;
         }
         .calculator button.operator {
             background-color: #ffa;
         }
         .calculator button.equals {
-            background-color: #0f0;
+            background-color: #28a745;
             color: white;
         }
         .moon-phase {
@@ -89,6 +97,9 @@
             background-color: #fff;
             border-radius: 50%;
             clip-path: circle(50px at 50% 50%);
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -223,7 +234,6 @@
             currentOperation = operation;
             previousValue = currentValue;
             currentValue = '';
-            updateDisplay();
         }
 
         function compute() {
