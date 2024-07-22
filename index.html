@@ -79,20 +79,25 @@
             font-size: 18px;
             cursor: pointer;
             border: none;
-            background-color: #007bff;
-            color: white;
             border-radius: 5px;
             transition: background-color 0.3s ease;
+            color: #fff;
+            font-weight: bold;
         }
         .calculator button:hover, .currency-converter button:hover, .world-clock button:hover {
             background-color: #0056b3;
         }
         .calculator button.operator {
-            background-color: #ffa;
+            background-color: #f0ad4e; /* Orange für Operatoren */
         }
         .calculator button.equals {
-            background-color: #28a745;
-            color: white;
+            background-color: #28a745; /* Grün für Gleichheitszeichen */
+        }
+        .calculator button.number {
+            background-color: #007bff; /* Blau für Zahlen */
+        }
+        .calculator button.clear {
+            background-color: #dc3545; /* Rot für Löschen */
         }
         .moon-phase img {
             width: 100px;
@@ -104,7 +109,7 @@
 </head>
 <body>
     <header>
-        Website Der Informationen
+        Website für informationen rund um die Welt
         <div class="marquee"><span>Bibelfratz website herzlich willkommen == Diese Website Dient Zur information es ist noch nicht alles perfekt ;)</span></div>
     </header>
 
@@ -115,21 +120,21 @@
             <div class="calculator">
                 <input type="text" id="display" disabled>
                 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-                    <button onclick="appendNumber('7')">7</button>
-                    <button onclick="appendNumber('8')">8</button>
-                    <button onclick="appendNumber('9')">9</button>
+                    <button class="number" onclick="appendNumber('7')">7</button>
+                    <button class="number" onclick="appendNumber('8')">8</button>
+                    <button class="number" onclick="appendNumber('9')">9</button>
                     <button class="operator" onclick="chooseOperation('/')">/</button>
-                    <button onclick="appendNumber('4')">4</button>
-                    <button onclick="appendNumber('5')">5</button>
-                    <button onclick="appendNumber('6')">6</button>
+                    <button class="number" onclick="appendNumber('4')">4</button>
+                    <button class="number" onclick="appendNumber('5')">5</button>
+                    <button class="number" onclick="appendNumber('6')">6</button>
                     <button class="operator" onclick="chooseOperation('*')">*</button>
-                    <button onclick="appendNumber('1')">1</button>
-                    <button onclick="appendNumber('2')">2</button>
-                    <button onclick="appendNumber('3')">3</button>
+                    <button class="number" onclick="appendNumber('1')">1</button>
+                    <button class="number" onclick="appendNumber('2')">2</button>
+                    <button class="number" onclick="appendNumber('3')">3</button>
                     <button class="operator" onclick="chooseOperation('-')">-</button>
-                    <button onclick="appendNumber('0')">0</button>
-                    <button onclick="appendNumber('.')">.</button>
-                    <button class="operator" onclick="clearDisplay()">C</button>
+                    <button class="number" onclick="appendNumber('0')">0</button>
+                    <button class="number" onclick="appendNumber('.')">.</button>
+                    <button class="clear" onclick="clearDisplay()">C</button>
                     <button class="operator" onclick="chooseOperation('+')">+</button>
                     <button class="equals" onclick="compute()">=</button>
                 </div>
