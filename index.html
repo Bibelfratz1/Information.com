@@ -97,17 +97,15 @@
             background-color: #007bff; /* Blau für Ziffern */
         }
         .moon-phase {
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 150px;
             margin: 20px auto;
             position: relative;
-            background: #000;
-            border-radius: 50%;
-            overflow: hidden;
         }
         .moon-phase img {
             width: 100%;
             height: auto;
+            display: block;
         }
     </style>
 </head>
@@ -305,16 +303,27 @@
         function updateMoonPhase() {
             const moonPhaseText = document.getElementById('moon-phase-text');
             const moonImage = document.getElementById('moon-image');
-            const phases = {
-                'Neumond': 'path_to_new_moon_image.png', // Füge hier den Pfad zu deinem Neumond-Bild ein
-                'Zunehmender Mond': 'path_to_waxing_moon_image.png', // Füge hier den Pfad zu deinem zunehmenden Mond-Bild ein
-                'Vollmond': 'path_to_full_moon_image.png', // Füge hier den Pfad zu deinem Vollmond-Bild ein
-                'Abnehmender Mond': 'path_to_waning_moon_image.png' // Füge hier den Pfad zu deinem abnehmenden Mond-Bild ein
-            };
-            const phasesKeys = Object.keys(phases);
-            const currentPhase = phasesKeys[Math.floor(Math.random() * phasesKeys.length)];
-            moonPhaseText.textContent = `Aktuelle Mondphase: ${currentPhase}`;
-            moonImage.src = phases[currentPhase];
+            const now = new Date();
+            const days = (now - new Date(now.getFullYear(), 0, 1)) / (1000 * 60 * 60 * 24);
+            const phase = (days % 29.53) / 29.53; // Mondzyklus-Dauer ca. 29.53 Tage
+            let phaseText = '';
+            let imageSrc = '';
+
+            if (phase < 0.02 || phase > 0.98) {
+                phaseText = 'Neumond';
+                imageSrc = 'path_to_new_moon_image.png'; // Pfad zu deinem Neumond-Bild
+            } else if (phase < 0.25) {
+                phaseText = 'Zunehmender Mond';
+                imageSrc = 'path_to_waxing_moon_image.png'; // Pfad zu deinem zunehmenden Mond-Bild
+            } else if (phase < 0.5) {
+                phaseText = 'Vollmond';
+                imageSrc = 'path_to_full_moon_image.png'; // Pfad zu deinem Vollmond-Bild
+            } else {
+                phaseText = 'Abnehmender Mond';
+                imageSrc = 'path_to_waning_moon_image.png'; // Pfad zu deinem abnehmenden Mond-Bild
+            }
+            moonPhaseText.textContent = `Aktuelle Mondphase: ${phaseText}`;
+            moonImage.src = imageSrc;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
