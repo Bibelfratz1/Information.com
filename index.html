@@ -105,18 +105,35 @@
             border-radius: 50%;
             background-color: #000;
         }
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
     </style>
 </head>
 <body>
     <header>
-        Website für informationen rund um die Welt
-        <div class="marquee"><span>Bibelfratz website herzlich willkommen == Diese Website Dient Zur information es ist noch nicht alles perfekt ;)</span></div>
+        <div class="language-selector">
+            <label for="language">Sprache:</label>
+            <select id="language" onchange="changeLanguage()">
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
+        </div>
+        <div id="header-title">Website für wichtige Sachen</div>
+        <div class="marquee"><span id="marquee-text">Bibelfratz website herzlich willkommen == Diese Website Dient Zur information es ist noch nicht alles perfekt ;)</span></div>
     </header>
 
     <div class="container">
         <!-- Taschenrechner Sektion -->
         <div id="calculator" class="section">
-            <h2>Taschenrechner</h2>
+            <h2 id="calculator-title">Taschenrechner</h2>
             <div class="calculator">
                 <input type="text" id="display" disabled>
                 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
@@ -143,7 +160,7 @@
 
         <!-- Währungsumrechner Sektion -->
         <div id="currency-converter" class="section">
-            <h2>Währungsumrechner</h2>
+            <h2 id="currency-title">Währungsumrechner</h2>
             <div class="currency-converter">
                 <input type="number" id="amount" placeholder="Betrag">
                 <select id="currency">
@@ -157,7 +174,7 @@
 
         <!-- Weltzeituhr Sektion -->
         <div id="world-clock" class="section">
-            <h2>Weltzeituhr</h2>
+            <h2 id="world-clock-title">Weltzeituhr</h2>
             <div class="world-clock">
                 <select id="timezone">
                     <option value="-9">Anchorage (GMT-09:00)</option>
@@ -178,18 +195,18 @@
 
         <!-- Mondzyklus Sektion -->
         <div id="moon-phase" class="section">
-            <h2>Mondzyklus</h2>
+            <h2 id="moon-phase-title">Mondzyklus</h2>
             <div class="moon-phase">
-                <img id="moon-image" src="https://github.com/Bibelfratz1/Information.com/blob/main/new_moon.png" alt="Mondphase">
+                <img id="moon-image" src="https://github.com/Bibelfratz1/Information.com/raw/main/new_moon.png" alt="Mondphase">
             </div>
-            <p id="moon-phase-text"></p>
+            <p id="moon-phase-text">Aktuelle Mondphase</p>
         </div>
 
         <!-- Geldvermögen Sektion -->
         <div id="wealth-info" class="section">
-            <h2>Aktuelles Geldvermögen der Welt</h2>
+            <h2 id="wealth-info-title">Aktuelles Geldvermögen der Welt</h2>
             <p id="total-wealth">418 Billionen USD (Stand 2024)</p>
-            <h2>Die 5 reichsten Menschen der Welt</h2>
+            <h2 id="top-richest-title">Die 5 reichsten Menschen der Welt</h2>
             <ul id="top-richest">
                 <li>Bernard Arnault - 211 Milliarden USD (2024)</li>
                 <li>Elon Musk - 198 Milliarden USD (2024)</li>
@@ -201,20 +218,20 @@
 
         <!-- Durchschnittstemperatur Sektion -->
         <div id="temperature-info" class="section">
-            <h2>Durchschnittstemperatur der Erde</h2>
+            <h2 id="temperature-info-title">Durchschnittstemperatur der Erde</h2>
             <p id="temperature">14.9 °C (2024)</p>
         </div>
 
         <!-- Sonnenzeiten Sektion -->
         <div id="sun-times" class="section">
-            <h2>Sonnenaufgang und Sonnenuntergang</h2>
+            <h2 id="sun-times-title">Sonnenaufgang und Sonnenuntergang</h2>
             <p>Sonnenaufgang: <span id="sunrise">05:40</span></p>
             <p>Sonnenuntergang: <span id="sunset">21:08</span></p>
         </div>
 
         <!-- Meeresspiegel Sektion -->
         <div id="sea-level" class="section">
-            <h2>Aktueller Meeresspiegel</h2>
+            <h2 id="sea-level-title">Aktueller Meeresspiegel</h2>
             <p id="sea-level-info">3 mm über dem Durchschnitt (2024)</p>
         </div>
     </div>
@@ -224,112 +241,86 @@
         let previousValue = '';
         let currentValue = '';
 
-        function appendNumber(number) {
-            currentValue += number;
-            updateDisplay();
-        }
-
-        function chooseOperation(operation) {
-            if (currentValue === '') return;
-            if (previousValue !== '') {
-                compute();
+        const translations = {
+            'de': {
+                'header-title': 'Website für wichtige Sachen',
+                'marquee-text': 'Bibelfratz website herzlich willkommen == Diese Website Dient Zur information es ist noch nicht alles perfekt ;)',
+                'calculator-title': 'Taschenrechner',
+                'currency-title': 'Währungsumrechner',
+                'world-clock-title': 'Weltzeituhr',
+                'moon-phase-title': 'Mondzyklus',
+                'moon-phase-text': 'Aktuelle Mondphase',
+                'wealth-info-title': 'Aktuelles Geldvermögen der Welt',
+                'top-richest-title': 'Die 5 reichsten Menschen der Welt',
+                'temperature-info-title': 'Durchschnittstemperatur der Erde',
+                'sun-times-title': 'Sonnenaufgang und Sonnenuntergang',
+                'sea-level-title': 'Aktueller Meeresspiegel'
+            },
+            'en': {
+                'header-title': 'Important Information Website',
+                'marquee-text': 'Bibelfratz website welcome == This website serves as information, not everything is perfect yet ;)',
+                'calculator-title': 'Calculator',
+                'currency-title': 'Currency Converter',
+                'world-clock-title': 'World Clock',
+                'moon-phase-title': 'Moon Phases',
+                'moon-phase-text': 'Current Moon Phase',
+                'wealth-info-title': 'Current Global Wealth',
+                'top-richest-title': 'The 5 Richest People in the World',
+                'temperature-info-title': 'Average Earth Temperature',
+                'sun-times-title': 'Sunrise and Sunset',
+                'sea-level-title': 'Current Sea Level'
+            },
+            'fr': {
+                'header-title': 'Site d\'Information Importante',
+                'marquee-text': 'Site Bibelfratz bienvenue == Ce site sert d\'information, tout n\'est pas encore parfait ;)',
+                'calculator-title': 'Calculatrice',
+                'currency-title': 'Convertisseur de Devises',
+                'world-clock-title': 'Horloge Mondiale',
+                'moon-phase-title': 'Phases de Lune',
+                'moon-phase-text': 'Phase de Lune Actuelle',
+                'wealth-info-title': 'Richesse Mondiale Actuelle',
+                'top-richest-title': 'Les 5 Personnes Les Plus Riches du Monde',
+                'temperature-info-title': 'Température Moyenne de la Terre',
+                'sun-times-title': 'Lever et Coucher du Soleil',
+                'sea-level-title': 'Niveau de la Mer Actuel'
             }
-            currentOperation = operation;
-            previousValue = currentValue;
-            currentValue = '';
+        };
+
+        function changeLanguage() {
+            const lang = document.getElementById('language').value;
+            document.getElementById('header-title').textContent = translations[lang]['header-title'];
+            document.getElementById('marquee-text').textContent = translations[lang]['marquee-text'];
+            document.getElementById('calculator-title').textContent = translations[lang]['calculator-title'];
+            document.getElementById('currency-title').textContent = translations[lang]['currency-title'];
+            document.getElementById('world-clock-title').textContent = translations[lang]['world-clock-title'];
+            document.getElementById('moon-phase-title').textContent = translations[lang]['moon-phase-title'];
+            document.getElementById('moon-phase-text').textContent = translations[lang]['moon-phase-text'];
+            document.getElementById('wealth-info-title').textContent = translations[lang]['wealth-info-title'];
+            document.getElementById('top-richest-title').textContent = translations[lang]['top-richest-title'];
+            document.getElementById('temperature-info-title').textContent = translations[lang]['temperature-info-title'];
+            document.getElementById('sun-times-title').textContent = translations[lang]['sun-times-title'];
+            document.getElementById('sea-level-title').textContent = translations[lang]['sea-level-title'];
         }
 
-        function compute() {
-            let result;
-            const prev = parseFloat(previousValue);
-            const current = parseFloat(currentValue);
-            if (isNaN(prev) || isNaN(current)) return;
-            switch (currentOperation) {
-                case '+':
-                    result = prev + current;
-                    break;
-                case '-':
-                    result = prev - current;
-                    break;
-                case '*':
-                    result = prev * current;
-                    break;
-                case '/':
-                    result = prev / current;
-                    break;
-                default:
-                    return;
-            }
-            currentValue = result;
-            currentOperation = '';
-            previousValue = '';
-            updateDisplay();
-        }
-
-        function updateDisplay() {
-            document.getElementById('display').value = currentValue;
-        }
-
-        function clearDisplay() {
-            currentValue = '';
-            previousValue = '';
-            currentOperation = '';
-            updateDisplay();
-        }
-
-        function convertCurrency() {
-            const amount = document.getElementById('amount').value;
-            const currency = document.getElementById('currency').value;
-            let result;
-            if (currency === 'usdToEur') {
-                result = amount * 0.85;
-            } else if (currency === 'eurToUsd') {
-                result = amount * 1.18;
-            }
-            document.getElementById('result').value = result.toFixed(2);
-        }
-
-        function showTime() {
-            const timezone = document.getElementById('timezone').value;
-            let time = new Date();
-            const offset = time.getTimezoneOffset() * 60000;
-            const utcTime = time.getTime() + offset;
-            let timeInTimezone = new Date(utcTime + (3600000 * timezoneOffset(timezone)));
-            document.getElementById('clock').value = timeInTimezone.toLocaleTimeString();
-        }
-
-        function timezoneOffset(timezone) {
-            const offsets = {
-                "-9": -9,
-                "-8": -8,
-                "-7": -7,
-                "-6": -6,
-                "-5": -5,
-                "0": 0,
-                "1": 1,
-                "2": 2,
-                "9": 9,
-                "10": 10
-            };
-            return offsets[timezone];
-        }
+        let currentPhase = '';
 
         function updateMoonPhase() {
             const phaseImages = {
                 'new': 'https://github.com/Bibelfratz1/Information.com/raw/main/new_moon.png',
-                'waxing': 'https://github.com/Bibelfratz1/Information.com/blob/main/last_quarter.pngg',
+                'waxing': 'https://github.com/Bibelfratz1/Information.com/raw/main/waxing_crescent.png',
                 'full': 'https://github.com/Bibelfratz1/Information.com/raw/main/full_moon.png',
-                'waning': 'https://github.com/Bibelfratz1/Information.com/blob/main/first_quarter.png'
+                'waning': 'https://github.com/Bibelfratz1/Information.com/raw/main/waning_gibbous.png'
             };
 
             const phases = ['new', 'waxing', 'full', 'waning'];
-            const currentPhase = phases[Math.floor(Math.random() * phases.length)];
+            currentPhase = phases[Math.floor(Math.random() * phases.length)];
             document.getElementById('moon-image').src = phaseImages[currentPhase];
             document.getElementById('moon-phase-text').textContent = `Aktuelle Mondphase: ${currentPhase.charAt(0).toUpperCase() + currentPhase.slice(1)} Mond`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             updateMoonPhase();
+            changeLanguage(); // Set default language to German
         });
     </script>
 </body>
