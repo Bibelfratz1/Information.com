@@ -182,7 +182,9 @@
         <!-- Mondzyklus Sektion -->
         <div id="moon-phase" class="section">
             <h2>Mondzyklus</h2>
-            <img id="moon-image" src="" alt="Mondphase">
+            <div class="moon-phase">
+                <img id="moon-image" src="" alt="Mondphase">
+            </div>
             <p id="moon-phase-text"></p>
         </div>
 
@@ -216,7 +218,7 @@
         <!-- Meeresspiegel Sektion -->
         <div id="sea-level" class="section">
             <h2>Aktueller Meeresspiegel</h2>
-            <p id="sea-level-info">3 mm über dem Durchschnitt (2024)</p>
+            <p>3 mm über dem Durchschnitt (2024)</p>
         </div>
     </div>
 
@@ -310,28 +312,28 @@
 
             if (phase < 0.02 || phase > 0.98) {
                 phaseText = 'Neumond';
-                imageSrc = 'https://github.com/Bibelfratz1/Information.com/blob/main/new_moon.png?raw=true'; // URL zu deinem Neumond-Bild
+                imageSrc = 'C:/Users/jonas/Desktop/website/new_moon.png'; // Lokaler Pfad zum Neumond-Bild
             } else if (phase < 0.25) {
                 phaseText = 'Zunehmender Mond';
-                imageSrc = 'https://github.com/Bibelfratz1/Information.com/blob/main/waxing_crescent.png?raw=true'; // URL zu deinem zunehmenden Mond-Crescent-Bild
+                imageSrc = 'C:/Users/jonas/Desktop/website/waxing_crescent.png'; // Lokaler Pfad zum zunehmenden Mond-Crescent-Bild
             } else if (phase < 0.275) {
                 phaseText = 'Erstes Viertel';
-                imageSrc = 'https://github.com/Bibelfratz1/Information.com/blob/main/first_quarter.png?raw=true'; // URL zu deinem ersten Viertel-Bild
+                imageSrc = 'C:/Users/jonas/Desktop/website/first_quarter.png'; // Lokaler Pfad zum ersten Viertel-Bild
             } else if (phase < 0.50) {
                 phaseText = 'Zunehmender Mond';
-                imageSrc = 'https://github.com/Bibelfratz1/Information.com/blob/main/waxing_gibbous.png?raw=true'; // URL zu deinem zunehmenden Mond-Gibbous-Bild
+                imageSrc = 'C:/Users/jonas/Desktop/website/waxing_gibbous.png'; // Lokaler Pfad zum zunehmenden Mond-Gibbous-Bild
             } else if (phase < 0.525) {
                 phaseText = 'Vollmond';
-                imageSrc = 'https://github.com/Bibelfratz1/Information.com/blob/main/full_moon.png?raw=true'; // URL zu deinem Vollmond-Bild
+                imageSrc = 'C:/Users/jonas/Desktop/website/full_moon.png'; // Lokaler Pfad zum Vollmond-Bild
             } else if (phase < 0.75) {
                 phaseText = 'Abnehmender Mond';
-                imageSrc = 'https://github.com/Bibelfratz1/Information.com/blob/main/waning_gibbous.png?raw=true'; // URL zu deinem abnehmenden Mond-Gibbous-Bild
+                imageSrc = 'C:/Users/jonas/Desktop/website/waning_gibbous.png'; // Lokaler Pfad zum abnehmenden Mond-Gibbous-Bild
             } else if (phase < 0.775) {
                 phaseText = 'Letztes Viertel';
-                imageSrc = 'https://github.com/Bibelfratz1/Information.com/blob/main/last_quarter.png?raw=true'; // URL zu deinem letzten Viertel-Bild
+                imageSrc = 'C:/Users/jonas/Desktop/website/last_quarter.png'; // Lokaler Pfad zum letzten Viertel-Bild
             } else {
                 phaseText = 'Abnehmender Mond';
-                imageSrc = 'https://github.com/Bibelfratz1/Information.com/blob/main/waning_crescent.png?raw=true'; // URL zu deinem abnehmenden Mond-Crescent-Bild
+                imageSrc = 'C:/Users/jonas/Desktop/website/waning_crescent.png'; // Lokaler Pfad zum abnehmenden Mond-Crescent-Bild
             }
             moonPhaseText.textContent = `Aktuelle Mondphase: ${phaseText}`;
             moonImage.src = imageSrc;
