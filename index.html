@@ -94,19 +94,11 @@
             background-color: #28a745;
             color: white;
         }
-        .moon-phase {
+        .moon-phase img {
             width: 100px;
             height: 100px;
-            margin: 20px auto;
-            background-color: #000;
             border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-        }
-        .moon-phase img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            background-color: #000;
         }
     </style>
 </head>
@@ -183,7 +175,7 @@
         <div id="moon-phase" class="section">
             <h2>Mondzyklus</h2>
             <div class="moon-phase">
-                <img id="moon-image" src="" alt="Mondphase">
+                <img id="moon-image" src="https://github.com/Bibelfratz1/Information.com/raw/main/new_moon.png" alt="Mondphase">
             </div>
             <p id="moon-phase-text"></p>
         </div>
@@ -218,7 +210,7 @@
         <!-- Meeresspiegel Sektion -->
         <div id="sea-level" class="section">
             <h2>Aktueller Meeresspiegel</h2>
-            <p>3 mm über dem Durchschnitt (2024)</p>
+            <p id="sea-level-info">3 mm über dem Durchschnitt (2024)</p>
         </div>
     </div>
 
@@ -297,46 +289,38 @@
             let time = new Date();
             const offset = time.getTimezoneOffset() * 60000;
             const utcTime = time.getTime() + offset;
-            let timeInTimezone = new Date(utcTime + (3600000 * timezone));
+            let timeInTimezone = new Date(utcTime + (3600000 * timezoneOffset(timezone)));
             document.getElementById('clock').value = timeInTimezone.toLocaleTimeString();
         }
 
-        function updateMoonPhase() {
-            const moonPhaseText = document.getElementById('moon-phase-text');
-            const moonImage = document.getElementById('moon-image');
-            const now = new Date();
-            const days = (now - new Date(now.getFullYear(), 0, 1)) / (1000 * 60 * 60 * 24);
-            const phase = (days % 29.53) / 29.53; // Mondzyklus-Dauer ca. 29.53 Tage
-            let phaseText = '';
-            let imageSrc = '';
+        function timezoneOffset(timezone) {
+            const offsets = {
+                "-9": -9,
+                "-8": -8,
+                "-7": -7,
+                "-6": -6,
+                "-5": -5,
+                "0": 0,
+                "1": 1,
+                "2": 2,
+                "9": 9,
+                "10": 10
+            };
+            return offsets[timezone];
+        }
 
-            if (phase < 0.02 || phase > 0.98) {
-                phaseText = 'Neumond';
-                imageSrc = 'C:/Users/jonas/Desktop/website/new_moon.png'; // Lokaler Pfad zum Neumond-Bild
-            } else if (phase < 0.25) {
-                phaseText = 'Zunehmender Mond';
-                imageSrc = 'C:/Users/jonas/Desktop/website/waxing_crescent.png'; // Lokaler Pfad zum zunehmenden Mond-Crescent-Bild
-            } else if (phase < 0.275) {
-                phaseText = 'Erstes Viertel';
-                imageSrc = 'C:/Users/jonas/Desktop/website/first_quarter.png'; // Lokaler Pfad zum ersten Viertel-Bild
-            } else if (phase < 0.50) {
-                phaseText = 'Zunehmender Mond';
-                imageSrc = 'C:/Users/jonas/Desktop/website/waxing_gibbous.png'; // Lokaler Pfad zum zunehmenden Mond-Gibbous-Bild
-            } else if (phase < 0.525) {
-                phaseText = 'Vollmond';
-                imageSrc = 'C:/Users/jonas/Desktop/website/full_moon.png'; // Lokaler Pfad zum Vollmond-Bild
-            } else if (phase < 0.75) {
-                phaseText = 'Abnehmender Mond';
-                imageSrc = 'C:/Users/jonas/Desktop/website/waning_gibbous.png'; // Lokaler Pfad zum abnehmenden Mond-Gibbous-Bild
-            } else if (phase < 0.775) {
-                phaseText = 'Letztes Viertel';
-                imageSrc = 'C:/Users/jonas/Desktop/website/last_quarter.png'; // Lokaler Pfad zum letzten Viertel-Bild
-            } else {
-                phaseText = 'Abnehmender Mond';
-                imageSrc = 'C:/Users/jonas/Desktop/website/waning_crescent.png'; // Lokaler Pfad zum abnehmenden Mond-Crescent-Bild
-            }
-            moonPhaseText.textContent = `Aktuelle Mondphase: ${phaseText}`;
-            moonImage.src = imageSrc;
+        function updateMoonPhase() {
+            const phaseImages = {
+                'new': 'https://github.com/Bibelfratz1/Information.com/raw/main/new_moon.png',
+                'waxing': 'https://github.com/Bibelfratz1/Information.com/raw/main/waxing_moon.png',
+                'full': 'https://github.com/Bibelfratz1/Information.com/raw/main/full_moon.png',
+                'waning': 'https://github.com/Bibelfratz1/Information.com/raw/main/waning_moon.png'
+            };
+
+            const phases = ['new', 'waxing', 'full', 'waning'];
+            const currentPhase = phases[Math.floor(Math.random() * phases.length)];
+            document.getElementById('moon-image').src = phaseImages[currentPhase];
+            document.getElementById('moon-phase-text').textContent = `Aktuelle Mondphase: ${currentPhase.charAt(0).toUpperCase() + currentPhase.slice(1)} Mond`;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
