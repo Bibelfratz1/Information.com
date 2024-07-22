@@ -79,7 +79,6 @@
             font-size: 18px;
             cursor: pointer;
             border: none;
-            background-color: #007bff;
             color: white;
             border-radius: 5px;
             transition: background-color 0.3s ease;
@@ -88,31 +87,27 @@
             background-color: #0056b3;
         }
         .calculator button.operator {
-            background-color: #ffa;
+            background-color: #f0ad4e; /* Orange für Operatoren */
+            color: black;
         }
         .calculator button.equals {
-            background-color: #28a745;
-            color: white;
+            background-color: #28a745; /* Grüner Button für Ergebnis */
+        }
+        .calculator button.digit {
+            background-color: #007bff; /* Blau für Ziffern */
         }
         .moon-phase {
             width: 100px;
             height: 100px;
             margin: 20px auto;
-            background-color: #000;
-            border-radius: 50%;
             position: relative;
+            background: #000;
+            border-radius: 50%;
             overflow: hidden;
         }
-        .moon-phase::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .moon-phase img {
             width: 100%;
-            height: 100%;
-            background-color: #fff;
-            border-radius: 50%;
-            clip-path: circle(50px at 50% 50%);
+            height: auto;
         }
     </style>
 </head>
@@ -129,20 +124,20 @@
             <div class="calculator">
                 <input type="text" id="display" disabled>
                 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-                    <button onclick="appendNumber('7')">7</button>
-                    <button onclick="appendNumber('8')">8</button>
-                    <button onclick="appendNumber('9')">9</button>
+                    <button class="digit" onclick="appendNumber('7')">7</button>
+                    <button class="digit" onclick="appendNumber('8')">8</button>
+                    <button class="digit" onclick="appendNumber('9')">9</button>
                     <button class="operator" onclick="chooseOperation('/')">/</button>
-                    <button onclick="appendNumber('4')">4</button>
-                    <button onclick="appendNumber('5')">5</button>
-                    <button onclick="appendNumber('6')">6</button>
+                    <button class="digit" onclick="appendNumber('4')">4</button>
+                    <button class="digit" onclick="appendNumber('5')">5</button>
+                    <button class="digit" onclick="appendNumber('6')">6</button>
                     <button class="operator" onclick="chooseOperation('*')">*</button>
-                    <button onclick="appendNumber('1')">1</button>
-                    <button onclick="appendNumber('2')">2</button>
-                    <button onclick="appendNumber('3')">3</button>
+                    <button class="digit" onclick="appendNumber('1')">1</button>
+                    <button class="digit" onclick="appendNumber('2')">2</button>
+                    <button class="digit" onclick="appendNumber('3')">3</button>
                     <button class="operator" onclick="chooseOperation('-')">-</button>
-                    <button onclick="appendNumber('0')">0</button>
-                    <button onclick="appendNumber('.')">.</button>
+                    <button class="digit" onclick="appendNumber('0')">0</button>
+                    <button class="digit" onclick="appendNumber('.')">.</button>
                     <button class="operator" onclick="clearDisplay()">C</button>
                     <button class="operator" onclick="chooseOperation('+')">+</button>
                     <button class="equals" onclick="compute()">=</button>
@@ -188,7 +183,9 @@
         <!-- Mondzyklus Sektion -->
         <div id="moon-phase" class="section">
             <h2>Mondzyklus</h2>
-            <div class="moon-phase"></div>
+            <div class="moon-phase">
+                <img id="moon-image" src="" alt="Mond">
+            </div>
             <p id="moon-phase-text"></p>
         </div>
 
@@ -306,11 +303,18 @@
         }
 
         function updateMoonPhase() {
-            const moonPhase = document.querySelector('.moon-phase');
-            const phaseText = document.getElementById('moon-phase-text');
-            const phases = ['Neumond', 'Zunehmender Mond', 'Vollmond', 'Abnehmender Mond'];
-            const currentPhase = phases[Math.floor(Math.random() * phases.length)];
-            phaseText.textContent = `Aktuelle Mondphase: ${currentPhase}`;
+            const moonPhaseText = document.getElementById('moon-phase-text');
+            const moonImage = document.getElementById('moon-image');
+            const phases = {
+                'Neumond': 'path_to_new_moon_image.png', // Füge hier den Pfad zu deinem Neumond-Bild ein
+                'Zunehmender Mond': 'path_to_waxing_moon_image.png', // Füge hier den Pfad zu deinem zunehmenden Mond-Bild ein
+                'Vollmond': 'path_to_full_moon_image.png', // Füge hier den Pfad zu deinem Vollmond-Bild ein
+                'Abnehmender Mond': 'path_to_waning_moon_image.png' // Füge hier den Pfad zu deinem abnehmenden Mond-Bild ein
+            };
+            const phasesKeys = Object.keys(phases);
+            const currentPhase = phasesKeys[Math.floor(Math.random() * phasesKeys.length)];
+            moonPhaseText.textContent = `Aktuelle Mondphase: ${currentPhase}`;
+            moonImage.src = phases[currentPhase];
         }
 
         document.addEventListener('DOMContentLoaded', () => {
